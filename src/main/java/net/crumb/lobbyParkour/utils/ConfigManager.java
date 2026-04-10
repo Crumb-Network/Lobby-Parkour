@@ -19,6 +19,10 @@ public class ConfigManager {
         return new Settings();
     }
 
+    public static boolean isHologramsDisabled() {
+        return config.getBoolean("disable-holograms", false);
+    }
+
     public static class Format {
         private final String path = "formatting.";
 

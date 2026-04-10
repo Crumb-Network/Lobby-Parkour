@@ -9,10 +9,7 @@ import net.crumb.lobbyParkour.utils.*;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.*;
-import org.bukkit.entity.Display;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.Player;
-import org.bukkit.entity.TextDisplay;
+import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockPlaceEvent;
@@ -84,10 +81,17 @@ public class BlockPlaceListener implements Listener {
                         .filter(e -> e instanceof TextDisplay)
                         .forEach(Entity::remove);
 
-                TextDisplay display = world.spawn(textDisplayLocation, TextDisplay.class, entity -> {
-                    entity.text(startText);
-                    entity.setBillboard(Display.Billboard.CENTER);
-                });
+                Entity display;
+                if (!ConfigManager.isHologramsDisabled()) {
+                    display = world.spawn(textDisplayLocation, TextDisplay.class, entity -> {
+                        entity.text(startText);
+                        entity.setBillboard(Display.Billboard.CENTER);
+                    });
+                } else {
+                    display = world.spawn(textDisplayLocation, BlockDisplay.class, entity -> {
+                        entity.setInvisible(true);
+                    });
+                }
 
                 UUID entityUuid = display.getUniqueId();
                 UUID playerUuid = player.getUniqueId();
@@ -176,10 +180,18 @@ public class BlockPlaceListener implements Listener {
                             .filter(e -> e instanceof TextDisplay)
                             .forEach(Entity::remove);
 
-                    TextDisplay display = world.spawn(textDisplayLocation, TextDisplay.class, entity -> {
-                        entity.text(endText);
-                        entity.setBillboard(Display.Billboard.CENTER);
-                    });
+                    Entity display;
+                    if (!ConfigManager.isHologramsDisabled()) {
+                        display = world.spawn(textDisplayLocation, TextDisplay.class, entity -> {
+                            entity.text(endText);
+                            entity.setBillboard(Display.Billboard.CENTER);
+                        });
+                    } else {
+                        display = world.spawn(textDisplayLocation, BlockDisplay.class, entity -> {
+                            entity.setInvisible(true);
+                        });
+                    }
+
 
                     UUID endEntityUuid = display.getUniqueId();
 
@@ -261,10 +273,18 @@ public class BlockPlaceListener implements Listener {
                             .filter(e -> e instanceof TextDisplay)
                             .forEach(Entity::remove);
 
-                    TextDisplay display = world.spawn(textDisplayLocation, TextDisplay.class, entity -> {
-                        entity.text(checkpointText);
-                        entity.setBillboard(Display.Billboard.CENTER);
-                    });
+
+                    Entity display;
+                    if (!ConfigManager.isHologramsDisabled()) {
+                        display = world.spawn(textDisplayLocation, TextDisplay.class, entity -> {
+                            entity.text(checkpointText);
+                            entity.setBillboard(Display.Billboard.CENTER);
+                        });
+                    } else {
+                        display = world.spawn(textDisplayLocation, BlockDisplay.class, entity -> {
+                            entity.setInvisible(true);
+                        });
+                    }
 
                     UUID checkpointEntityUuid = display.getUniqueId();
                     query.updateCheckPointEntityUUID(LocationHelper.locationToString(location), checkpointEntityUuid);
@@ -305,10 +325,17 @@ public class BlockPlaceListener implements Listener {
                     .filter(e -> e instanceof TextDisplay)
                     .forEach(Entity::remove);
 
-            TextDisplay display = world.spawn(textDisplayLocation, TextDisplay.class, entity -> {
-                entity.text(checkpointText);
-                entity.setBillboard(Display.Billboard.CENTER);
-            });
+            Entity display;
+            if (ConfigManager.isHologramsDisabled()) {
+                display = world.spawn(textDisplayLocation, TextDisplay.class, entity -> {
+                    entity.text(checkpointText);
+                    entity.setBillboard(Display.Billboard.CENTER);
+                });
+            } else {
+                display = world.spawn(textDisplayLocation, BlockDisplay.class, entity -> {
+                    entity.setInvisible(true);
+                });
+            }
 
             UUID checkpointEntityUuid = display.getUniqueId();
 
