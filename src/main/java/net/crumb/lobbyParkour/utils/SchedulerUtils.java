@@ -44,22 +44,43 @@ public class SchedulerUtils {
     }
 
     public static void runTaskLater(Plugin plugin, Runnable runnable, long delayTicks) {
+        long safeDelay = Math.max(1L, delayTicks);
         if (IS_FOLIA) {
-            Bukkit.getGlobalRegionScheduler().runDelayed(plugin, task -> runnable.run(), delayTicks);
+            Bukkit.getGlobalRegionScheduler().runDelayed(plugin, task -> runnable.run(), safeDelay);
         } else {
-            Bukkit.getScheduler().runTaskLater(plugin, runnable, delayTicks);
+            Bukkit.getScheduler().runTaskLater(plugin, runnable, safeDelay);
         }
     }
 
     public static void runTaskLater(Plugin plugin, Entity entity, Runnable runnable, long delayTicks) {
+        long safeDelay = Math.max(1L, delayTicks);
         if (IS_FOLIA) {
-            entity.getScheduler().runDelayed(plugin, task -> runnable.run(), () -> {}, delayTicks);
+            entity.getScheduler().runDelayed(plugin, task -> runnable.run(), () -> {}, safeDelay);
         } else {
-            Bukkit.getScheduler().runTaskLater(plugin, runnable, delayTicks);
+            Bukkit.getScheduler().runTaskLater(plugin, runnable, safeDelay);
+        }
+    }
+
+    public static void runTask(Plugin plugin, Location location, Runnable runnable) {
+        if (IS_FOLIA) {
+            Bukkit.getRegionScheduler().execute(plugin, location, runnable);
+        } else {
+            Bukkit.getScheduler().runTask(plugin, runnable);
+        }
+    }
+
+    public static void runTaskLater(Plugin plugin, Location location, Runnable runnable, long delayTicks) {
+        long safeDelay = Math.max(1L, delayTicks);
+        if (IS_FOLIA) {
+            Bukkit.getRegionScheduler().runDelayed(plugin, location, task -> runnable.run(), safeDelay);
+        } else {
+            Bukkit.getScheduler().runTaskLater(plugin, runnable, safeDelay);
         }
     }
 
     public static Task runTaskTimer(Plugin plugin, Consumer<Task> task, long delay, long period) {
+        long safeDelay = Math.max(1L, delay);
+        long safePeriod = Math.max(1L, period);
         if (IS_FOLIA) {
             io.papermc.paper.threadedregions.scheduler.ScheduledTask scheduledTask = Bukkit.getGlobalRegionScheduler().runAtFixedRate(plugin, st -> task.accept(new Task() {
                 @Override
@@ -71,7 +92,7 @@ public class SchedulerUtils {
                 public boolean isCancelled() {
                     return st.isCancelled();
                 }
-            }), delay, period);
+            }), safeDelay, safePeriod);
 
             return new Task() {
                 @Override
@@ -85,33 +106,34 @@ public class SchedulerUtils {
                 }
             };
         } else {
-            BukkitRunnable runnable = new BukkitRunnable() {
+            final BukkitRunnable[] runnableHandle = new BukkitRunnable[1];
+            runnableHandle[0] = new BukkitRunnable() {
                 @Override
                 public void run() {
                     task.accept(new Task() {
                         @Override
                         public void cancel() {
-                            cancel();
+                            runnableHandle[0].cancel();
                         }
 
                         @Override
                         public boolean isCancelled() {
-                            return isCancelled();
+                            return runnableHandle[0].isCancelled();
                         }
                     });
                 }
             };
-            runnable.runTaskTimer(plugin, delay, period);
+            runnableHandle[0].runTaskTimer(plugin, safeDelay, safePeriod);
 
             return new Task() {
                 @Override
                 public void cancel() {
-                    runnable.cancel();
+                    runnableHandle[0].cancel();
                 }
 
                 @Override
                 public boolean isCancelled() {
-                    return runnable.isCancelled();
+                    return runnableHandle[0].isCancelled();
                 }
             };
         }
