@@ -27,7 +27,7 @@ public final class LobbyParkour extends JavaPlugin {
         Logger logger = Logger.getLogger("Lobby-Parkour");
         logger.info("-------------------------------");
         logger.info("        LPK - Lobby Parkour       ");
-        logger.info("          Version: 1.1.1");
+        logger.info("          Version: " + getPluginMeta().getVersion());
         logger.info("           Author: crumb");
         logger.info("--------------------------------");
     }
