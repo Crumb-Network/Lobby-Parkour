@@ -13,6 +13,8 @@
 #
 # ==============================================================================
 
+disable-holograms: false # If enabled, holograms will not be spawned. This will fix issues with plugins like DecentHolograms, but it will also disable all holograms for the parkour.
+
 formatting:
   # %parkour_name% -> The name of the parkour
   start-plate: "<green>⚑</green> <white>%parkour_name%</white>"
