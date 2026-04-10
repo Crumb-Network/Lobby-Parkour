@@ -31,7 +31,6 @@ public class PlayerDropItemListener implements Listener {
             player.getInventory().clear();
             MMUtils.sendMessage(player, "Canceled setting up a new parkour!", MessageType.INFO);
             InventoryClickListener.getNewCheckpointsCache().remove(player.getUniqueId());
-            player.getInventory().clear();
         }
 
     }
