@@ -5,14 +5,18 @@ import net.crumb.lobbyParkour.commands.BaseCommand;
 import net.crumb.lobbyParkour.database.ParkoursDatabase;
 import net.crumb.lobbyParkour.listeners.*;
 import net.crumb.lobbyParkour.systems.LeaderboardUpdater;
+import net.crumb.lobbyParkour.systems.ParkourSession;
+import net.crumb.lobbyParkour.systems.ParkourSessionManager;
 import net.crumb.lobbyParkour.utils.ConfigManager;
 import net.crumb.lobbyParkour.utils.ItemActionHandler;
 import net.crumb.lobbyParkour.utils.SchedulerUtils;
 import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.sql.SQLException;
+import java.util.List;
 import java.util.logging.Logger;
 
 public final class LobbyParkour extends JavaPlugin {
@@ -88,6 +92,14 @@ public final class LobbyParkour extends JavaPlugin {
 
     @Override
     public void onDisable() {
+        for (Player player : this.getServer().getOnlinePlayers()) {
+            if (ParkourSessionManager.isInSession(player.getUniqueId())) {
+                ParkourSession oldSession = ParkourSessionManager.getSession(player.getUniqueId());
+                PlayerInteractListener.restoreInventory(player, oldSession);
+                ParkourSessionManager.endSession(player.getUniqueId());
+            }
+        }
+
         if (parkoursDatabase == null) {
             return;
         }
