@@ -6,6 +6,7 @@ import net.crumb.lobbyParkour.database.Query;
 import net.crumb.lobbyParkour.guis.CheckpointEditMenu;
 import net.crumb.lobbyParkour.guis.EditPlateTypeMenu;
 import net.crumb.lobbyParkour.guis.MapManageMenu;
+import net.crumb.lobbyParkour.models.ParkourItem;
 import net.crumb.lobbyParkour.systems.LeaderboardUpdater;
 import net.crumb.lobbyParkour.systems.ParkourSession;
 import net.crumb.lobbyParkour.systems.ParkourSessionManager;
@@ -39,6 +40,25 @@ public class PlayerInteractListener implements Listener {
     private static final LobbyParkour plugin = LobbyParkour.getInstance();
     private static final TextFormatter textFormatter = new TextFormatter();
     private static final LeaderboardUpdater updater = LeaderboardUpdater.getInstance();
+
+    private final ConfigManager.Items itemConfig = ConfigManager.getItems();
+    private final ParkourItem lastCheckpointProps = new ParkourItem(
+            itemConfig.getCheckpointItem(),
+            itemConfig.getCheckpointAmount(),
+            itemConfig.getCheckpointName()
+    );
+
+    private final ParkourItem resetItemProps = new ParkourItem(
+            itemConfig.getResetItem(),
+            itemConfig.getResetAmount(),
+            itemConfig.getResetName()
+    );
+
+    private final ParkourItem leaveItemProps = new ParkourItem(
+            itemConfig.getLeaveItem(),
+            itemConfig.getLeaveAmount(),
+            itemConfig.getLeaveName()
+    );
 
 
     @EventHandler
@@ -253,9 +273,9 @@ public class PlayerInteractListener implements Listener {
                         });
 
                         // Create parkour items
-                        ItemStack restItem = ActionItemMaker.createItem("minecraft:oak_door", 1, "<red>Reset", emptyLore, resetPkActionId);
-                        ItemStack leaveItem = ActionItemMaker.createItem("minecraft:red_bed", 1, "<red>Leave", emptyLore, leavePkActionId);
-                        ItemStack lastCpItem = ActionItemMaker.createItem("minecraft:heavy_weighted_pressure_plate", 1, "<green>Last Checkpoint", emptyLore, lastCheckpointActionId);
+                        ItemStack restItem = ActionItemMaker.createItem(resetItemProps.getItem(), resetItemProps.getAmount(), resetItemProps.getName(), emptyLore, resetPkActionId);
+                        ItemStack leaveItem = ActionItemMaker.createItem(leaveItemProps.getItem(), leaveItemProps.getAmount(), leaveItemProps.getName(), emptyLore, leavePkActionId);
+                        ItemStack lastCpItem = ActionItemMaker.createItem(lastCheckpointProps.getItem(), lastCheckpointProps.getAmount(), lastCheckpointProps.getName(), emptyLore, lastCheckpointActionId);
 
                         // Save inventory before clearing
                         Map<Integer, ItemStack> saveInventory = new HashMap<>();

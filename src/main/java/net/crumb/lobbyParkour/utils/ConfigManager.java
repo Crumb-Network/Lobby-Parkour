@@ -7,20 +7,78 @@ import org.bukkit.configuration.file.FileConfiguration;
 public class ConfigManager {
     private static FileConfiguration config;
 
+    private static void requireLoaded() {
+        if (config == null) {
+            throw new IllegalStateException("ConfigManager used before config was loaded");
+        }
+    }
+
     public static void loadConfig(FileConfiguration config) {
         ConfigManager.config = config;
     }
 
     public static Format getFormat() {
+        requireLoaded();
         return new Format();
     }
 
+    public static Items getItems() {
+        requireLoaded();
+        return new Items();
+    }
+
     public static Settings getSettings() {
+        requireLoaded();
         return new Settings();
     }
 
     public static boolean isHologramsDisabled() {
+        requireLoaded();
         return config.getBoolean("disable-holograms", false);
+    }
+
+    public static class Items {
+        private final String checkpointPath = "items.last-checkpoint.";
+        private final String resetPath = "items.reset.";
+        private final String leavePath = "items.leave.";
+
+        public String getCheckpointItem() {
+            return config.getString(checkpointPath + "item", "minecraft:heavy_weighted_pressure_plate");
+        }
+
+        public int getCheckpointAmount() {
+            return config.getInt(checkpointPath + "amount", 1);
+        }
+
+        public String getCheckpointName() {
+            return config.getString(checkpointPath + "name", "<green>Last Checkpoint");
+        }
+
+
+        public String getResetItem() {
+            return config.getString(resetPath + "item", "minecraft:oak_door");
+        }
+
+        public int getResetAmount() {
+            return config.getInt(resetPath + "amount", 1);
+        }
+
+        public String getResetName() {
+            return config.getString(resetPath + "name", "<red>Reset");
+        }
+
+
+        public String getLeaveItem() {
+            return config.getString(leavePath + "item", "minecraft:red_bed");
+        }
+
+        public int getLeaveAmount() {
+            return config.getInt(leavePath + "amount", 1);
+        }
+
+        public String getLeaveName() {
+            return config.getString(leavePath + "name", "<red>Leave");
+        }
     }
 
     public static class Format {

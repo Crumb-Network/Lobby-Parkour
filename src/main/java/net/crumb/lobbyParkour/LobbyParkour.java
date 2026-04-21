@@ -58,10 +58,9 @@ public final class LobbyParkour extends JavaPlugin {
         });
 
         saveDefaultConfig();
+        ConfigManager.loadConfig(getConfig());
         startUpMessage();
         registerListeners();
-      
-        ConfigManager.loadConfig(getConfig());
 
         try {
             parkoursDatabase = new ParkoursDatabase(getDataFolder().getAbsolutePath() + "/lobby_parkour.db");
@@ -89,6 +88,10 @@ public final class LobbyParkour extends JavaPlugin {
 
     @Override
     public void onDisable() {
+        if (parkoursDatabase == null) {
+            return;
+        }
+
         try {
             parkoursDatabase.closeConnection();
         } catch (SQLException ex) {
