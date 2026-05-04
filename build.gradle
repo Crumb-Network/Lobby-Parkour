@@ -3,8 +3,10 @@ plugins {
     id("xyz.jpenilla.run-paper") version "2.3.1"
 }
 
-group = 'net.crumb'
+group = 'net.kalbskinder'
 version = '26.1'
+
+def paperVersion = '26.1.2'
 
 repositories {
     mavenCentral()
@@ -22,7 +24,7 @@ repositories {
 }
 
 dependencies {
-    compileOnly("io.papermc.paper:paper-api:26.1.2.build.+")
+    compileOnly("io.papermc.paper:paper-api:${paperVersion}.build.+")
     implementation("org.xerial:sqlite-jdbc:3.50.2.0")
     compileOnly("me.clip:placeholderapi:2.11.6")
 }
@@ -32,7 +34,7 @@ tasks {
         // Configure the Minecraft version for our task.
         // This is the only required configuration besides applying the plugin.
         // Your plugin's jar (or shadowJar if present) will be used automatically.
-        minecraftVersion("26.1.2")
+        minecraftVersion(paperVersion)
     }
 }
 
