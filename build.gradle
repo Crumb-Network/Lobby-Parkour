@@ -4,7 +4,7 @@ plugins {
 }
 
 group = 'net.crumb'
-version = '26.1.2'
+version = '26.1'
 
 repositories {
     mavenCentral()
