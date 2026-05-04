@@ -98,7 +98,6 @@ public class PlayerInteractListener implements Listener {
                     });
 
                     if (parkourId[0] == null) {
-                        MMUtils.sendMessage(player, "Could not find parkour id of the checkpoint.", MessageType.ERROR);
                         return;
                     }
 
@@ -358,7 +357,6 @@ public class PlayerInteractListener implements Listener {
                             int checkpointIndex = query.getCheckpointIndex(LocationHelper.locationToString(location));
 
                             if (checkpointIndex == -1) {
-                                MMUtils.sendMessage(player, "Could not find checkpoint!", MessageType.ERROR);
                                 return;
                             }
 
