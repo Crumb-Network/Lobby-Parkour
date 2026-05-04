@@ -66,13 +66,13 @@ formatting:
 
   leaderboard:
     # %parkour_name% -> The name of the parkour
-    title: "<red>%parkour_name%"
+    title: "<yellow><bold>%parkour_name%"
 
     # The display item will be shown above the title if enabled. (It will rotate like a dropped item.)
     display-item:
       enabled: true
-      item: "minecraft:stone"
-      enchant-glint: true
+      item: "minecraft:clock"
+      enchant-glint: false
       spin-enabled: true
 
     maximum-displayed: 10
@@ -82,10 +82,10 @@ formatting:
     # %position% -> The score position on the leaderboard (does not include #)
     # %player_name% -> The name of the player
     # %timer% -> The completion timer (formatted previously)
-    default-line-style: "#%position% - %player%: %timer%"
+    default-line-style: "#%position% - %player_name%: %timer%"
     personal-best-style: ""
 
-    empty-line-style: "empty"
+    empty-line-style: "-"
 
     # ADVANCED - This setting will overwrite the default-line setting for a specific line (keep the line empty if you don't want to change the line.)
     lines:

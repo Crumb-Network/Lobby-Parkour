@@ -3,6 +3,7 @@ package net.crumb.lobbyParkour.systems;
 import java.sql.SQLException;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.LinkedHashSet;
 
 import net.crumb.lobbyParkour.LobbyParkour;
 import net.crumb.lobbyParkour.database.ParkoursDatabase;
@@ -206,6 +207,16 @@ public class LeaderboardUpdater {
 
             List<Map.Entry<UUID, Float>> times = query.getParkourTimes(parkourId);
             times.sort(Comparator.comparingDouble(Map.Entry::getValue)); // Ensure best times first
+
+            // Deduplicate: keep only each player's best (first) entry
+            Set<UUID> seen = new LinkedHashSet<>();
+            List<Map.Entry<UUID, Float>> deduped = new ArrayList<>();
+            for (Map.Entry<UUID, Float> entry : times) {
+                if (seen.add(entry.getKey())) {
+                    deduped.add(entry);
+                }
+            }
+            times = deduped;
 
             int maxDisplayed = (Integer) format.get("maximum-displayed");
             if (times.size() > maxDisplayed) {

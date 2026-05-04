@@ -92,7 +92,6 @@ public class RenameItemListener implements Listener {
                 Component startText = textFormatter.formatString(ConfigManager.getFormat().getStartPlate(), placeholders);
                 startTextDisplay.text(startText);
 
-
                 UUID endEntityUuid = query.getEndEntityUuid(itemName);
                 Location endLocation = query.getEndLocation(itemName);
                 World endLocationWorld = endLocation.getWorld();
@@ -140,6 +139,7 @@ public class RenameItemListener implements Listener {
                 leaderboardManager.spawnLeaderboard(lbLocation, itemName);
 
                 player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1.1f, 2.0f);
+                player.getInventory().setItem(0, null);
             } catch (SQLException ex) {
                 ex.printStackTrace();
             }

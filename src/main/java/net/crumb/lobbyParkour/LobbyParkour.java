@@ -16,7 +16,6 @@ import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.sql.SQLException;
-import java.util.List;
 import java.util.logging.Logger;
 
 public final class LobbyParkour extends JavaPlugin {

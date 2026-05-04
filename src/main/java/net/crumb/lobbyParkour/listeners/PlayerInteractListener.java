@@ -407,6 +407,7 @@ public class PlayerInteractListener implements Listener {
             Location lbLocation = new Location(eventLocation.getWorld(), eventLocation.getBlockX(), eventLocation.getBlockY() + 1, eventLocation.getBlockZ());
 
             if (itemName.equals("Place Leaderboard")) {
+                player.getInventory().remove(stack);
                 AnvilView anvilInventory = MenuType.ANVIL.create(player, "Enter Parkour Name");
                 anvilInventory.setItem(0, ItemMaker.createItem("minecraft:paper", 1, "Paper", Collections.emptyList()));
                 RenameItemListener.setLbLocation(lbLocation);

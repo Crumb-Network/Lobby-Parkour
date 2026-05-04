@@ -9,7 +9,6 @@ import io.papermc.paper.command.brigadier.Commands;
 import net.crumb.lobbyParkour.LobbyParkour;
 import net.crumb.lobbyParkour.guis.LeaderboardMenu;
 import net.crumb.lobbyParkour.guis.MainMenu;
-import net.crumb.lobbyParkour.systems.LeaderboardManager;
 import net.crumb.lobbyParkour.systems.LeaderboardUpdater;
 import net.crumb.lobbyParkour.utils.MMUtils;
 import net.crumb.lobbyParkour.utils.MessageType;
@@ -61,9 +60,7 @@ public class BaseCommand {
                     .executes(ctx -> {
                         CommandSender sender = ctx.getSource().getSender();
                         if (sender instanceof Player player) {
-                            MMUtils.sendMessage(player, "This feature is currently unavailable", MessageType.ERROR);
-                            SoundUtils.playSoundSequence(player, Sound.BLOCK_ANVIL_LAND, 1.0f, 1.1f, 0);
-                            // LeaderboardMenu.openMenu(player);
+                            LeaderboardMenu.openMenu(player);
                         }
                         return Command.SINGLE_SUCCESS;
                     })
@@ -144,7 +141,7 @@ public class BaseCommand {
 
         return " ".repeat(spaces) + mm.serialize(component);
     }
-        
+
     private static int getPixelLength(Component component) {
         String plain = MiniMessage.miniMessage().serialize(component).replaceAll("<[^>]+>", ""); // Ignore minimessage tags
         int length = 0;
