@@ -218,6 +218,10 @@ public class ConfigManager {
         public int getLeaderboardQueryRate() {
             return config.getInt("setings.leaderboard-query-update", 1);
         }
+
+        public boolean isAllowFly() {
+            return config.getBoolean("settings.allow-fly", false);
+        }
     }
 }
 

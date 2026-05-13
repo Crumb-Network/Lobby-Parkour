@@ -192,6 +192,12 @@ public class PlayerInteractListener implements Listener {
 
                 // Check if the player is starting a parkour
                 if (isPkStart) {
+                    // Prevent starting parkour while flying
+                    if (player.isFlying() && !ConfigManager.getSettings().isAllowFly()) {
+                        MMUtils.sendMessage(player, "<red>You cannot start a parkour while flying.</red>");
+                        return;
+                    }
+
                     ParkourTimer.start();
                     // If player is already doing parkour, reset the timer to 0s
                     if (ParkourSessionManager.isInSession(player.getUniqueId())) {
