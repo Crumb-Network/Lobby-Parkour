@@ -56,6 +56,9 @@ formatting:
   # No placeholders supported
   checkpoint-skip-message: "<color:#ff9c40>☄</color> <color:#474747>»</color> <color:#ffed8a>You've missed a checkpoint!"
 
+  flight-cancel-message: "<red>You have ended your parkour session by flying.</red>"
+  flight-start-cancel-message: "<red>You cannot start a parkour while flying.</red>"
+
   # The action bar will be displayed while a player is doing a parkour.
   # %parkour_name% -> The name of the parkour
   # %player_name% -> The name of the player
