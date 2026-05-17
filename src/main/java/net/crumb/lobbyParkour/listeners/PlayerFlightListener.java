@@ -2,6 +2,7 @@ package net.crumb.lobbyParkour.listeners;
 
 import net.crumb.lobbyParkour.systems.ParkourSession;
 import net.crumb.lobbyParkour.systems.ParkourSessionManager;
+import net.crumb.lobbyParkour.utils.ConfigManager;
 import net.crumb.lobbyParkour.utils.MMUtils;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
@@ -14,6 +15,7 @@ public class PlayerFlightListener implements Listener {
     @EventHandler
     public void onPlayerToggleFlight(PlayerToggleFlightEvent event) {
         Player player = event.getPlayer();
+        if (ConfigManager.getSettings().isAllowFly()) return;
         if (ParkourSessionManager.isInSession(player.getUniqueId())) {
             ParkourSession session = ParkourSessionManager.getSession(player.getUniqueId());
             if (session == null) return;
