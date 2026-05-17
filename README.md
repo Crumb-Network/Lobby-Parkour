@@ -9,6 +9,7 @@ A simple and customizable plugin that adds Parkour to your Minecraft Server
 
 ## Features
 - Start, End and Checkpoints
+- Leaderboards
 - Customize each plate type
 - Customize parkour messages
 - Relocate Checkpoints
