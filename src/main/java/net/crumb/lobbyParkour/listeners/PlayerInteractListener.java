@@ -194,7 +194,7 @@ public class PlayerInteractListener implements Listener {
                 if (isPkStart) {
                     // Prevent starting parkour while flying
                     if (player.isFlying() && !ConfigManager.getSettings().isAllowFly()) {
-                        MMUtils.sendMessage(player, "<red>You cannot start a parkour while flying.</red>");
+                        MMUtils.sendMessage(player, ConfigManager.getFormat().getFlightStartCancelMessage());
                         return;
                     }
 

@@ -132,6 +132,14 @@ public class ConfigManager {
             return config.getString(path + "checkpoint-skip-message");
         }
 
+        public String getFlightCancelMessage() {
+            return config.getString(path + "flight-cancel-message");
+        }
+
+        public String getFlightStartCancelMessage() {
+            return config.getString(path + "flight-start-cancel-message");
+        }
+
         public Leaderboard getLeaderboard() {
             return new Leaderboard("formatting.leaderboard.");
         }
