@@ -2,9 +2,7 @@ package net.crumb.lobbyParkour.systems;
 
 import org.bukkit.inventory.ItemStack;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class ParkourSession {
@@ -13,12 +11,30 @@ public class ParkourSession {
     private long finalTime;
     private int maxCheckpoints;
     private int lastReachedCheckpointIndex;
+    private float lastCheckpointYaw;
+    private float lastCheckpointPitch;
     private int completedCheckpoints;
     private Map<Integer, ItemStack> inventory = new HashMap<>();
 
     public ParkourSession(String parkourName) {
         this.parkourName = parkourName;
         this.startTimeMillis = System.currentTimeMillis();
+    }
+
+    public float getLastCheckpointPitch() {
+        return lastCheckpointPitch;
+    }
+
+    public void setLastCheckpointPitch(float lastCheckpointPitch) {
+        this.lastCheckpointPitch = lastCheckpointPitch;
+    }
+
+    public float getLastCheckpointYaw() {
+        return lastCheckpointYaw;
+    }
+
+    public void setLastCheckpointYaw(float lastCheckpointYaw) {
+        this.lastCheckpointYaw = lastCheckpointYaw;
     }
 
     public long getElapsedTimeMillis() {

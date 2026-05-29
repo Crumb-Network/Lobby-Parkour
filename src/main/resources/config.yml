@@ -97,5 +97,6 @@ formatting:
       -
 
 settings:
-  parkour-timeout:
+  # If enabled, the player will be teleported to the last checkpoint x,y,z + the pitch and yaw when he first activated that checkpoint
+  last-checkpoint-rotation: true
   allow-fly: false

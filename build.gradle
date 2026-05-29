@@ -3,10 +3,9 @@ plugins {
     id("xyz.jpenilla.run-paper") version "2.3.1"
 }
 
-group = 'net.kalbskinder'
-version = '26.1'
-
 def paperVersion = '26.1.2'
+group = 'net.kalbskinder'
+version = "${paperVersion}-v1.3.2"
 
 repositories {
     mavenCentral()

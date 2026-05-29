@@ -230,6 +230,10 @@ public class ConfigManager {
         public boolean isAllowFly() {
             return config.getBoolean("settings.allow-fly", false);
         }
+
+        public boolean isLastCheckpointRotation() {
+            return config.getBoolean("settings.last-checkpoint-rotation", false);
+        }
     }
 }
 

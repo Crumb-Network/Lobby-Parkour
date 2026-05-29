@@ -262,7 +262,7 @@ public class PlayerInteractListener implements Listener {
                             try {
                                 ParkoursDatabase database = new ParkoursDatabase(plugin.getDataFolder().getAbsolutePath() + "/lobby_parkour.db");
                                 Query query = new Query(database.getConnection());
-                                Location loc = null;
+                                Location loc;
                                 int parkourId = query.getParkourIdFromName(finalParkourName);
                                 if (lastIndex != 0) {
                                     loc = query.getCheckpointLocation(parkourId, lastIndex);
@@ -270,7 +270,18 @@ public class PlayerInteractListener implements Listener {
                                     loc = query.getStartLocation(finalParkourName);
                                 }
 
-                                Location teleportLocation = new Location(loc.getWorld(), loc.getX() + 0.5, loc.getY(), loc.getZ() + 0.5, player.getYaw(), player.getPitch());
+                                float yaw;
+                                float pitch;
+
+                                if (ConfigManager.getSettings().isLastCheckpointRotation()) {
+                                    yaw = session.getLastCheckpointYaw();
+                                    pitch = session.getLastCheckpointPitch();
+                                } else {
+                                    yaw = player.getYaw();
+                                    pitch = player.getPitch();
+                                }
+
+                                Location teleportLocation = new Location(loc.getWorld(), loc.getX() + 0.5, loc.getY(), loc.getZ() + 0.5, yaw, pitch);
                                 SchedulerUtils.teleport(player, teleportLocation);
                             } catch (SQLException ex) {
                                 MMUtils.sendMessage(player, "Could not get checkpoints from database.", MessageType.ERROR);
@@ -294,6 +305,9 @@ public class PlayerInteractListener implements Listener {
                         saveInventory.put(44, player.getInventory().getBoots());
                         session.setInventory(saveInventory);
                         player.getInventory().clear();
+
+                        session.setLastCheckpointPitch(player.getPitch());
+                        session.setLastCheckpointYaw(player.getYaw());
 
                         // Apply inventory layout
                         ItemMaker.giveItemToPlayer(player, restItem, 4);
@@ -366,7 +380,6 @@ public class PlayerInteractListener implements Listener {
                                 return;
                             }
 
-
                             int sessionCheckpointIndex = session.getLastReachedCheckpointIndex();
                             if (checkpointIndex < sessionCheckpointIndex) return;
 
@@ -375,6 +388,9 @@ public class PlayerInteractListener implements Listener {
                                 MMUtils.sendMessage(player, ConfigManager.getFormat().getCheckpointSkipMessage());
                                 return;
                             }
+
+                            session.setLastCheckpointPitch(player.getPitch());
+                            session.setLastCheckpointYaw(player.getYaw());
 
                             session.setLastReachedCheckpointIndex(checkpointIndex);
                             session.setCompletedCheckpoints(checkpointIndex);
