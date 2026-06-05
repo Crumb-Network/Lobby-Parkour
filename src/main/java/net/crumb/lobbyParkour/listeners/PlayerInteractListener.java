@@ -202,7 +202,7 @@ public class PlayerInteractListener implements Listener {
                     // If player is already doing parkour, reset the timer to 0s
                     if (ParkourSessionManager.isInSession(player.getUniqueId())) {
                         ParkourSession oldSession = ParkourSessionManager.getSession(player.getUniqueId());
-                        restoreInventory(player, oldSession);
+                        ParkourSessionManager.restoreInventory(player);
                         ParkourSessionManager.endSession(player.getUniqueId());
                     }
 
@@ -242,7 +242,7 @@ public class PlayerInteractListener implements Listener {
                         });
 
                         ItemActionHandler.registerAction(leavePkActionId, p -> {
-                            restoreInventory(p, ParkourSessionManager.getSession(player.getUniqueId()));
+                            ParkourSessionManager.restoreInventory(player);
 
                             if (ParkourSessionManager.isInSession(player.getUniqueId())) {
                                 ParkourSessionManager.endSession(player.getUniqueId());
@@ -334,10 +334,8 @@ public class PlayerInteractListener implements Listener {
 
                         float timerMillis = ParkourSessionManager.getSession(player.getUniqueId()).getElapsedSeconds();
                         String timer = ParkourTimer.formatTimer(timerMillis, ConfigManager.getFormat().getTimer(), player);
+                        ParkourSessionManager.restoreInventory(player); // Restore inventory
                         ParkourSessionManager.endSession(player.getUniqueId()); // End session
-
-                        // Restore inventory
-                        restoreInventory(player, session);
 
                         try {
                             ParkoursDatabase database = new ParkoursDatabase(plugin.getDataFolder().getAbsolutePath() + "/lobby_parkour.db");
@@ -442,24 +440,5 @@ public class PlayerInteractListener implements Listener {
                 loc1.getBlockX() == loc2.getBlockX() &&
                 loc1.getBlockY() == loc2.getBlockY() &&
                 loc1.getBlockZ() == loc2.getBlockZ();
-    }
-
-    public static void restoreInventory(Player player, ParkourSession session) {
-        if (player == null) return;
-        if (session == null || session.getInventory() == null || session.getInventory().isEmpty()) {
-            return;
-        }
-
-        // Restore inventory
-        player.getInventory().clear();
-        for (int i = 0; i < 36; i++) {
-            player.getInventory().setItem(i, session.getInventory().get(i));
-        }
-        player.getInventory().setItemInOffHand(session.getInventory().get(40));
-        player.getInventory().setHelmet(session.getInventory().get(41));
-        player.getInventory().setChestplate(session.getInventory().get(42));
-        player.getInventory().setLeggings(session.getInventory().get(43));
-        player.getInventory().setBoots(session.getInventory().get(44));
-        session.getInventory().clear();
     }
 }

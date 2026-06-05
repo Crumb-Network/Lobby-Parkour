@@ -1,6 +1,5 @@
 package net.crumb.lobbyParkour.listeners;
 
-import net.crumb.lobbyParkour.systems.ParkourSession;
 import net.crumb.lobbyParkour.systems.ParkourSessionManager;
 import net.crumb.lobbyParkour.utils.ConfigManager;
 import net.crumb.lobbyParkour.utils.MMUtils;
@@ -17,11 +16,7 @@ public class PlayerFlightListener implements Listener {
         Player player = event.getPlayer();
         if (ConfigManager.getSettings().isAllowFly()) return;
         if (ParkourSessionManager.isInSession(player.getUniqueId())) {
-            ParkourSession session = ParkourSessionManager.getSession(player.getUniqueId());
-            if (session == null) return;
-
-            PlayerInteractListener.restoreInventory(player, session);
-
+            ParkourSessionManager.restoreInventory(player);
             ParkourSessionManager.endSession(player.getUniqueId());
             MMUtils.sendMessage(player, ConfigManager.getFormat().getFlightCancelMessage());
             player.playSound(player.getLocation(), Sound.ENTITY_ENDERMAN_TELEPORT, 0.9f, 1.2f);

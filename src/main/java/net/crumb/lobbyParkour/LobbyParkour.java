@@ -50,6 +50,7 @@ public final class LobbyParkour extends JavaPlugin {
         pm.registerEvents(new PlayerHungerListener(), this);
         pm.registerEvents(new PlayerDeathListener(), this);
         pm.registerEvents(new PlayerLeaveListener(), this);
+        pm.registerEvents(new PlayerChangeWorldListener(), this);
     }
 
     @Override
@@ -93,8 +94,7 @@ public final class LobbyParkour extends JavaPlugin {
     public void onDisable() {
         for (Player player : this.getServer().getOnlinePlayers()) {
             if (ParkourSessionManager.isInSession(player.getUniqueId())) {
-                ParkourSession oldSession = ParkourSessionManager.getSession(player.getUniqueId());
-                PlayerInteractListener.restoreInventory(player, oldSession);
+                ParkourSessionManager.restoreInventory(player);
                 ParkourSessionManager.endSession(player.getUniqueId());
             }
         }
