@@ -2,14 +2,10 @@ package net.crumb.lobbyParkour.database;
 
 import net.crumb.lobbyParkour.utils.ItemMaker;
 import net.crumb.lobbyParkour.utils.LocationHelper;
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.ItemDisplay;
 import org.bukkit.inventory.ItemStack;
 
-import javax.annotation.Nullable;
 import java.sql.*;
 import java.util.*;
 

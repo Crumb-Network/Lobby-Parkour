@@ -1,8 +1,8 @@
 name: Lobby-Parkour
-version: '1.3.3'
+version: '1.3.4'
 main: net.crumb.lobbyParkour.LobbyParkour
 description: A plugin that adds an easy controllable lobby parkour
-api-version: '26.1'
+api-version: '26.2'
 author: crumb
 folia-supported: true
 softdepend: ["PlaceholderAPI"]
