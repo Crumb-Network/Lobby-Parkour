@@ -109,8 +109,7 @@ public class InventoryClickListener implements Listener {
                 Location location = null;
 
                 try {
-                    ParkoursDatabase database = new ParkoursDatabase(plugin.getDataFolder().getAbsolutePath() + "/lobby_parkour.db");
-                    Query query = new Query(database.getConnection());
+                    Query query = new Query(ParkoursDatabase.getConnection());
 
                     location = query.getLeaderboardLocation(leaderboardId);
                 } catch (SQLException ex) {
@@ -169,8 +168,7 @@ public class InventoryClickListener implements Listener {
 
             if (displayName.equals("Delete Parkour")) {
                 try {
-                    ParkoursDatabase database = new ParkoursDatabase(plugin.getDataFolder().getAbsolutePath() + "/lobby_parkour.db");
-                    Query query = new Query(database.getConnection());
+                    Query query = new Query(ParkoursDatabase.getConnection());
                     Component loreLine = event.getView().getItem(10).getItemMeta().lore().get(1);
                     String name = PlainTextComponentSerializer.plainText().serialize(loreLine);
 
@@ -255,8 +253,7 @@ public class InventoryClickListener implements Listener {
                 Location loc = null;
 
                 try {
-                    ParkoursDatabase database = new ParkoursDatabase(plugin.getDataFolder().getAbsolutePath() + "/lobby_parkour.db");
-                    Query query = new Query(database.getConnection());
+                    Query query = new Query(ParkoursDatabase.getConnection());
 
                     loc = query.getStartLocation(name);
                 } catch (SQLException ex) {
@@ -303,8 +300,7 @@ public class InventoryClickListener implements Listener {
 
                     // Get location of plate
                     try {
-                        ParkoursDatabase database = new ParkoursDatabase(plugin.getDataFolder().getAbsolutePath() + "/lobby_parkour.db");
-                        Query query = new Query(database.getConnection());
+                        Query query = new Query(ParkoursDatabase.getConnection());
                         if (menuType == PlateType.START) {
                             loc = query.getStartLocation(PlainTextComponentSerializer.plainText().serialize(loreLine));
                         } else if (menuType == PlateType.END) {
@@ -321,8 +317,7 @@ public class InventoryClickListener implements Listener {
                         loc.getBlock().setType(material);
 
                         try {
-                            ParkoursDatabase database = new ParkoursDatabase(plugin.getDataFolder().getAbsolutePath() + "/lobby_parkour.db");
-                            Query query = new Query(database.getConnection());
+                            Query query = new Query(ParkoursDatabase.getConnection());
                             String currentParkour = PlainTextComponentSerializer.plainText().serialize(clickedInventory.getItem(0).lore().get(0));
 
                             if (menuType == PlateType.START) {
@@ -369,8 +364,7 @@ public class InventoryClickListener implements Listener {
                 clickedInventory.close();
 
                 try {
-                    ParkoursDatabase database = new ParkoursDatabase(plugin.getDataFolder().getAbsolutePath() + "/lobby_parkour.db");
-                    Query query = new Query(database.getConnection());
+                    Query query = new Query(ParkoursDatabase.getConnection());
                     player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1.1f, 2.0f);
 
                     // Remove the old plate and entity
@@ -402,8 +396,7 @@ public class InventoryClickListener implements Listener {
 
             if (displayName.equals("Delete Checkpoint")) {
                 try {
-                    ParkoursDatabase database = new ParkoursDatabase(plugin.getDataFolder().getAbsolutePath() + "/lobby_parkour.db");
-                    Query query = new Query(database.getConnection());
+                    Query query = new Query(ParkoursDatabase.getConnection());
 
                     int parkourId = query.getParkourIdByCheckpointLocation(LocationHelper.locationToString(location));
                     int checkpointIndex = query.getCheckpointIndex(LocationHelper.locationToString(location));
@@ -491,8 +484,7 @@ public class InventoryClickListener implements Listener {
                         location.getBlock().setType(material);
 
                         try {
-                            ParkoursDatabase database = new ParkoursDatabase(plugin.getDataFolder().getAbsolutePath() + "/lobby_parkour.db");
-                            Query query = new Query(database.getConnection());
+                            Query query = new Query(ParkoursDatabase.getConnection());
                             query.updateCheckpointType(LocationHelper.locationToString(location), plate);
 
                             CheckpointPlateType.openMenu(player, parkourName, PlateType.CHECKPOINT, location);
@@ -529,8 +521,7 @@ public class InventoryClickListener implements Listener {
                 Location location = null;
 
                 try {
-                    ParkoursDatabase database = new ParkoursDatabase(plugin.getDataFolder().getAbsolutePath() + "/lobby_parkour.db");
-                    Query query = new Query(database.getConnection());
+                    Query query = new Query(ParkoursDatabase.getConnection());
                     int parkourId = query.getParkourIdFromName(parkourName);
                     location = query.getCheckpointLocation(parkourId, checkpointIndex);
                 } catch (SQLException ex) {

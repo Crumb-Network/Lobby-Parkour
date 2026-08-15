@@ -68,8 +68,7 @@ public class RenameItemListener implements Listener {
 
         if (title.equalsIgnoreCase("Rename Parkour")) {
             try {
-                ParkoursDatabase database = new ParkoursDatabase(plugin.getDataFolder().getAbsolutePath() + "/lobby_parkour.db");
-                Query query = new Query(database.getConnection());
+                Query query = new Query(ParkoursDatabase.getConnection());
 
                 if (query.parkourExists(itemName)) {
                     MMUtils.sendMessage(player, "A parkour with the same already exists!", MessageType.ERROR);
@@ -116,8 +115,7 @@ public class RenameItemListener implements Listener {
         }
         else if (title.equalsIgnoreCase("Enter Parkour Name")) {
             try {
-                ParkoursDatabase database = new ParkoursDatabase(plugin.getDataFolder().getAbsolutePath() + "/lobby_parkour.db");
-                Query query = new Query(database.getConnection());
+                Query query = new Query(ParkoursDatabase.getConnection());
 
                 int lbCount = query.leaderboardCount();
                 if (lbCount >= 28) {
@@ -170,8 +168,7 @@ public class RenameItemListener implements Listener {
 
     public static void updateCheckpoints(String parkourName) {
         try {
-            ParkoursDatabase database = new ParkoursDatabase(plugin.getDataFolder().getAbsolutePath() + "/lobby_parkour.db");
-            Query query = new Query(database.getConnection());
+            Query query = new Query(ParkoursDatabase.getConnection());
 
             int parkourId = query.getParkourIdFromName(parkourName);
             List<Object[]> checkpoints = query.getCheckpoints(parkourId);

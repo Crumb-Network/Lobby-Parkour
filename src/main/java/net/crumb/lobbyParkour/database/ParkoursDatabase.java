@@ -6,9 +6,12 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 public class ParkoursDatabase {
+
+    private static ParkoursDatabase instance;
+
     private final Connection connection;
 
-    public ParkoursDatabase(String path) throws SQLException {
+    private ParkoursDatabase(String path) throws SQLException {
         connection = DriverManager.getConnection("jdbc:sqlite:" + path);
         Statement statement = connection.createStatement();
 
@@ -70,13 +73,25 @@ public class ParkoursDatabase {
         statement.close();
     }
 
-    public void closeConnection() throws SQLException {
-        if (connection != null && !connection.isClosed()) {
-            connection.close();
+    public static void init(String path) throws SQLException {
+        if (instance != null && instance.connection != null && !instance.connection.isClosed()) {
+            return;
         }
+        instance = new ParkoursDatabase(path);
     }
 
-    public Connection getConnection() {
-        return connection;
+    public static Connection getConnection() {
+        if (instance == null || instance.connection == null) {
+            throw new IllegalStateException(
+                    "Database connection not initialised - call ParkoursDatabase.init(path) in onEnable first");
+        }
+        return instance.connection;
+    }
+
+    public static void close() throws SQLException {
+        if (instance != null && instance.connection != null && !instance.connection.isClosed()) {
+            instance.connection.close();
+        }
+        instance = null;
     }
 }

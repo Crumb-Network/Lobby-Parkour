@@ -28,8 +28,7 @@ public class PlayerDeathListener implements Listener {
 
             int lastIndex = ParkourSessionManager.getSessions().get(player.getUniqueId()).getLastReachedCheckpointIndex();
             try {
-                ParkoursDatabase database = new ParkoursDatabase(plugin.getDataFolder().getAbsolutePath() + "/lobby_parkour.db");
-                Query query = new Query(database.getConnection());
+                Query query = new Query(ParkoursDatabase.getConnection());
                 Location loc;
                 int parkourId = query.getParkourIdFromName(session.getParkourName());
                 if (lastIndex != 0) {

@@ -48,8 +48,7 @@ public class EditPlateTypeMenu {
         ItemStack currentType = null;
 
         try {
-            ParkoursDatabase database = new ParkoursDatabase(plugin.getDataFolder().getAbsolutePath() + "/lobby_parkour.db");
-            Query query = new Query(database.getConnection());
+            Query query = new Query(ParkoursDatabase.getConnection());
 
             if (menuType == PlateType.START) {
                 currentType = query.getStartType(mapName);

@@ -44,8 +44,7 @@ public class LeaderboardUpdater {
 
     public void updateCache() {
         try {
-            ParkoursDatabase database = new ParkoursDatabase(plugin.getDataFolder().getAbsolutePath() + "/lobby_parkour.db");
-            Query query = new Query(database.getConnection());
+            Query query = new Query(ParkoursDatabase.getConnection());
             List<UUID> itemUUIDs = query.getItemLinesUuid();
             List<Map.Entry<UUID, Integer>> titleUUIDs = query.getTitleLines();
             cache.put("itemUUID", itemUUIDs);
@@ -138,44 +137,37 @@ public class LeaderboardUpdater {
 
         Set<Map.Entry<UUID, Integer>> titleEntries = new HashSet<>((List<Map.Entry<UUID, Integer>>) cache.get("titleUUID"));
         if (!titleEntries.isEmpty()) {
-            try {
-                ParkoursDatabase database = new ParkoursDatabase(plugin.getDataFolder().getAbsolutePath() + "/lobby_parkour.db");
-                Query query = new Query(database.getConnection());
+            Query query = new Query(ParkoursDatabase.getConnection());
 
-                for (Map.Entry<UUID, Integer> entry : titleEntries) {
-                    UUID uuid = entry.getKey();
-                    int leaderboardId = entry.getValue();
+            for (Map.Entry<UUID, Integer> entry : titleEntries) {
+                UUID uuid = entry.getKey();
+                int leaderboardId = entry.getValue();
 
-                    Entity entity = Bukkit.getEntity(uuid);
-                    if (entity == null || entity.isDead()) continue;
-                    if (!(entity instanceof org.bukkit.entity.TextDisplay textDisplay)) continue;
+                Entity entity = Bukkit.getEntity(uuid);
+                if (entity == null || entity.isDead()) continue;
+                if (!(entity instanceof org.bukkit.entity.TextDisplay textDisplay)) continue;
 
-                    String parkourName;
-                    try {
-                        parkourName = query.getParkourNameByLeaderboard(leaderboardId);
-                    } catch (SQLException e) {
-                        e.printStackTrace();
-                        continue;
-                    }
-
-                    if (parkourName == null) {
-                        getLogger().warning("Parkour name is null for leaderboard ID " + leaderboardId);
-                        continue;
-                    }
-
-                    String rawTitle = (String) format.get("title");
-                    Component formattedTitle = textFormatter.formatString(rawTitle, Map.of("parkour_name", parkourName));
-
-                    SchedulerUtils.runTask(plugin, textDisplay, () -> {
-                        if (!textDisplay.text().equals(formattedTitle)) {
-                            textDisplay.text(formattedTitle);
-                        }
-                    });
+                String parkourName;
+                try {
+                    parkourName = query.getParkourNameByLeaderboard(leaderboardId);
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                    continue;
                 }
 
-                database.getConnection().close();
-            } catch (SQLException e) {
-                e.printStackTrace();
+                if (parkourName == null) {
+                    getLogger().warning("Parkour name is null for leaderboard ID " + leaderboardId);
+                    continue;
+                }
+
+                String rawTitle = (String) format.get("title");
+                Component formattedTitle = textFormatter.formatString(rawTitle, Map.of("parkour_name", parkourName));
+
+                SchedulerUtils.runTask(plugin, textDisplay, () -> {
+                    if (!textDisplay.text().equals(formattedTitle)) {
+                        textDisplay.text(formattedTitle);
+                    }
+                });
             }
         }
     }
@@ -202,8 +194,7 @@ public class LeaderboardUpdater {
 
     public void updateTimes(int parkourId) {
         try {
-            ParkoursDatabase database = new ParkoursDatabase(plugin.getDataFolder().getAbsolutePath() + "/lobby_parkour.db");
-            Query query = new Query(database.getConnection());
+            Query query = new Query(ParkoursDatabase.getConnection());
 
             List<Map.Entry<UUID, Float>> times = query.getParkourTimes(parkourId);
             times.sort(Comparator.comparingDouble(Map.Entry::getValue)); // Ensure best times first

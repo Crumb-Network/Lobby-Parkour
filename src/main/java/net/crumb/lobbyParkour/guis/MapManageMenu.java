@@ -75,8 +75,7 @@ public class MapManageMenu {
         ItemStack item = ItemMaker.createItem("minecraft:ender_pearl", 1, "<green>Teleport to plate", new ArrayList<String>());
         String locationText = "";
         try {
-            ParkoursDatabase database = new ParkoursDatabase(plugin.getDataFolder().getAbsolutePath() + "/lobby_parkour.db");
-            Query query = new Query(database.getConnection());
+            Query query = new Query(ParkoursDatabase.getConnection());
             Location location = query.getStartLocation(parkourName);
             locationText = String.format("%.2f, %.2f, %.2f", location.getX(), location.getY(), location.getZ());
             locationText = "<!italic><white>" + locationText;

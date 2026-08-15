@@ -52,8 +52,7 @@ public class BlockPlaceListener implements Listener {
                 player.getInventory().remove(item);
 
                 try {
-                    ParkoursDatabase database = new ParkoursDatabase(plugin.getDataFolder().getAbsolutePath() + "/lobby_parkour.db");
-                    Query query = new Query(database.getConnection());
+                    Query query = new Query(ParkoursDatabase.getConnection());
 
                     if (query.parkourMaps().size() == 28) {
                         MMUtils.sendMessage(player, "You can't have more than 28 parkours!", MessageType.ERROR);
@@ -111,8 +110,7 @@ public class BlockPlaceListener implements Listener {
                 player.getInventory().remove(item);
 
                 try {
-                    ParkoursDatabase database = new ParkoursDatabase(plugin.getDataFolder().getAbsolutePath() + "/lobby_parkour.db");
-                    Query query = new Query(database.getConnection());
+                    Query query = new Query(ParkoursDatabase.getConnection());
 
 
                     if (query.parkourMaps().size() == 28) {
@@ -143,8 +141,7 @@ public class BlockPlaceListener implements Listener {
                 player.getInventory().remove(item);
 
                 try {
-                    ParkoursDatabase database = new ParkoursDatabase(plugin.getDataFolder().getAbsolutePath() + "/lobby_parkour.db");
-                    Query query = new Query(database.getConnection());
+                    Query query = new Query(ParkoursDatabase.getConnection());
 
                     if (query.parkourMaps().size() == 28) {
                         MMUtils.sendMessage(player, "You can't have more than 28 parkours!", MessageType.ERROR);
@@ -248,8 +245,7 @@ public class BlockPlaceListener implements Listener {
                 int cpIndex = session.getCheckpointIndex();
 
                 try {
-                    ParkoursDatabase database = new ParkoursDatabase(plugin.getDataFolder().getAbsolutePath() + "/lobby_parkour.db");
-                    Query query = new Query(database.getConnection());
+                    Query query = new Query(ParkoursDatabase.getConnection());
                     // Update location
                     query.updateCheckpointLocation(LocationHelper.locationToString(location), parkourId, cpIndex);
 
@@ -297,8 +293,7 @@ public class BlockPlaceListener implements Listener {
 
     private static void createNewCheckpoint(LobbyParkour plugin, String parkourName, Player player, Location location) {
         try {
-            ParkoursDatabase database = new ParkoursDatabase(plugin.getDataFolder().getAbsolutePath() + "/lobby_parkour.db");
-            Query query = new Query(database.getConnection());
+            Query query = new Query(ParkoursDatabase.getConnection());
 
             int parkourId = query.getParkourIdFromName(parkourName);
             int cpIndex = query.getMaxCheckpointIndex(parkourId) + 1; // New index

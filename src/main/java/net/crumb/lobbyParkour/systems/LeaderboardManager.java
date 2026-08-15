@@ -36,8 +36,7 @@ public class LeaderboardManager {
 
     public void spawnLeaderboard(Location location, String parkourName) {
         try {
-            ParkoursDatabase database = new ParkoursDatabase(plugin.getDataFolder().getAbsolutePath() + "/lobby_parkour.db");
-            Query query = new Query(database.getConnection());
+            Query query = new Query(ParkoursDatabase.getConnection());
 
             int parkourId = query.getParkourIdFromName(parkourName);
             int leaderboardId = query.createLeaderboard(parkourId);
@@ -102,8 +101,7 @@ public class LeaderboardManager {
 
     public void deleteLeaderboard(int leaderboardId) {
         try {
-            ParkoursDatabase database = new ParkoursDatabase(plugin.getDataFolder().getAbsolutePath() + "/lobby_parkour.db");
-            Query query = new Query(database.getConnection());
+            Query query = new Query(ParkoursDatabase.getConnection());
 
             // Get all lines (UUIDs) associated with the leaderboard
             var lines = query.getLeaderboardLinesByLeaderboardId(leaderboardId); // You may need to implement this method

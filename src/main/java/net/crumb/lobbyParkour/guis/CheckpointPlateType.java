@@ -50,8 +50,7 @@ public class CheckpointPlateType {
         ItemStack currentType = null;
 
         try {
-            ParkoursDatabase database = new ParkoursDatabase(plugin.getDataFolder().getAbsolutePath() + "/lobby_parkour.db");
-            Query query = new Query(database.getConnection());
+            Query query = new Query(ParkoursDatabase.getConnection());
 
             if (menuType == PlateType.CHECKPOINT) {
                 currentType = query.getCheckpointType(LocationHelper.locationToString(location));
