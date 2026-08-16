@@ -66,6 +66,7 @@ public final class LobbyParkour extends JavaPlugin {
         registerListeners();
 
         try {
+            getDataFolder().mkdirs();
             ParkoursDatabase.init(getDataFolder().getAbsolutePath() + "/lobby_parkour.db");
         } catch (SQLException ex) {
             ex.printStackTrace();
