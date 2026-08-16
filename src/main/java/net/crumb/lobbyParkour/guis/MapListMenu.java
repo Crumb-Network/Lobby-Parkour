@@ -45,8 +45,7 @@ public class MapListMenu {
         gui.setItem(49, closeButton);
 
         try {
-            ParkoursDatabase database = new ParkoursDatabase(plugin.getDataFolder().getAbsolutePath() + "/lobby_parkour.db");
-            Query query = new Query(database.getConnection());
+            Query query = new Query(ParkoursDatabase.getConnection());
             List<String> maps = query.parkourMaps();
 
 

@@ -19,7 +19,6 @@ import java.sql.SQLException;
 import java.util.logging.Logger;
 
 public final class LobbyParkour extends JavaPlugin {
-    private ParkoursDatabase parkoursDatabase;
     private static LobbyParkour instance;
 
     public static LobbyParkour getInstance() {
@@ -67,7 +66,8 @@ public final class LobbyParkour extends JavaPlugin {
         registerListeners();
 
         try {
-            parkoursDatabase = new ParkoursDatabase(getDataFolder().getAbsolutePath() + "/lobby_parkour.db");
+            getDataFolder().mkdirs();
+            ParkoursDatabase.init(getDataFolder().getAbsolutePath() + "/lobby_parkour.db");
         } catch (SQLException ex) {
             ex.printStackTrace();
             getLogger().severe("Failed to connect to the database! " + ex.getMessage());
@@ -99,12 +99,8 @@ public final class LobbyParkour extends JavaPlugin {
             }
         }
 
-        if (parkoursDatabase == null) {
-            return;
-        }
-
         try {
-            parkoursDatabase.closeConnection();
+            ParkoursDatabase.close();
         } catch (SQLException ex) {
             ex.printStackTrace();
         }

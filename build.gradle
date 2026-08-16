@@ -5,7 +5,7 @@ plugins {
 
 def paperVersion = '26.2'
 group = 'net.kalbskinder'
-version = "${paperVersion}-v1.3.4"
+version = "${paperVersion}-v1.3.5"
 
 repositories {
     mavenCentral()

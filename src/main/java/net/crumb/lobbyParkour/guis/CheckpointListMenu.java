@@ -62,8 +62,7 @@ public class CheckpointListMenu {
         gui.setItem(0, secretItem);
 
         try {
-            ParkoursDatabase database = new ParkoursDatabase(plugin.getDataFolder().getAbsolutePath() + "/lobby_parkour.db");
-            Query query = new Query(database.getConnection());
+            Query query = new Query(ParkoursDatabase.getConnection());
             int parkourId = query.getParkourIdFromName(parkourName);
             List<Object[]> checkpoints = query.getCheckpoints(parkourId);
 

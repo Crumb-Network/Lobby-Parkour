@@ -50,8 +50,7 @@ public class LeaderboardMenu {
         gui.setItem(49, closeButton);
 
         try {
-            ParkoursDatabase database = new ParkoursDatabase(plugin.getDataFolder().getAbsolutePath() + "/lobby_parkour.db");
-            Query query = new Query(database.getConnection());
+            Query query = new Query(ParkoursDatabase.getConnection());
             Map<Integer, String> leaderboardNames = query.getLeaderboardNames();
             List<Location> leaderboardLocations = query.getLeaderboardLocations();
 
