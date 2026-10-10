@@ -216,6 +216,35 @@ public class ConfigManager {
         }
     }
 
+    public static Placeholders getPlaceholders() {
+        requireLoaded();
+        return new Placeholders();
+    }
+
+    public static class Placeholders {
+        private final String path = "placeholders.";
+
+        public String getEmptyName() {
+            return config.getString(path + "empty-name", "-");
+        }
+
+        public String getEmptyTime() {
+            return config.getString(path + "empty-time", "-");
+        }
+
+        public String getEmptyPosition() {
+            return config.getString(path + "empty-position", "-");
+        }
+
+        public String getTopFormat() {
+            return config.getString(path + "top-format", "%player_name% - %timer%");
+        }
+
+        public int getRefreshInterval() {
+            return config.getInt(path + "refresh-interval", 60);
+        }
+    }
+
     public static class Settings {
         private final String path = "setings.";
 

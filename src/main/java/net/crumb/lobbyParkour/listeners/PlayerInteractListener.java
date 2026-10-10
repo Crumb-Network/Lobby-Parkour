@@ -1,5 +1,6 @@
 package net.crumb.lobbyParkour.listeners;
 
+import net.crumb.lobbyParkour.systems.PlaceholderCache;
 import net.crumb.lobbyParkour.LobbyParkour;
 import net.crumb.lobbyParkour.database.ParkoursDatabase;
 import net.crumb.lobbyParkour.database.Query;
@@ -338,6 +339,7 @@ public class PlayerInteractListener implements Listener {
                             int id = query.getParkourIdFromName(parkourName);
                             query.saveTime(player.getUniqueId(), id, timerMillis);
                             updater.updateTimes(id);
+                            PlaceholderCache.refresh();
                         } catch (SQLException ex) {
                             ex.printStackTrace();
                         }

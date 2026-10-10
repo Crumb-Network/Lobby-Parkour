@@ -1,5 +1,6 @@
 package net.crumb.lobbyParkour.listeners;
 
+import net.crumb.lobbyParkour.systems.PlaceholderCache;
 import net.crumb.lobbyParkour.LobbyParkour;
 import net.crumb.lobbyParkour.database.ParkoursDatabase;
 import net.crumb.lobbyParkour.database.Query;
@@ -215,6 +216,7 @@ public class InventoryClickListener implements Listener {
                     });
 
                     query.deleteParkour(name);
+                    PlaceholderCache.refresh();
 
                     player.getInventory().close();
                     MMUtils.sendMessage(player, "The parkour <white>"+name+"</white> has been deleted!", MessageType.INFO);

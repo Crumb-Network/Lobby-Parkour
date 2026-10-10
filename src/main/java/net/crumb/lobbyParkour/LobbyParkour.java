@@ -1,5 +1,7 @@
 package net.crumb.lobbyParkour;
 
+import net.crumb.lobbyParkour.placeholders.LobbyParkourExpansion;
+import net.crumb.lobbyParkour.systems.PlaceholderCache;
 import io.papermc.paper.plugin.lifecycle.event.types.LifecycleEvents;
 import net.crumb.lobbyParkour.commands.BaseCommand;
 import net.crumb.lobbyParkour.database.ParkoursDatabase;
@@ -75,9 +77,14 @@ public final class LobbyParkour extends JavaPlugin {
             return;
         }
 
-        if (!Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI")) {
+        if (Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI")) {
+            new LobbyParkourExpansion(this).register();
+        } else {
             getLogger().warning("Could not find PlaceholderAPI!");
         }
+
+        PlaceholderCache.refresh();
+        PlaceholderCache.startPeriodicRefresh(Math.max(1, ConfigManager.getPlaceholders().getRefreshInterval()) * 20L);
 
         // Delay the updater init to ensure everything is ready
         SchedulerUtils.runTask(this, () -> {
@@ -92,6 +99,8 @@ public final class LobbyParkour extends JavaPlugin {
 
     @Override
     public void onDisable() {
+        PlaceholderCache.stopPeriodicRefresh();
+
         for (Player player : this.getServer().getOnlinePlayers()) {
             if (ParkourSessionManager.isInSession(player.getUniqueId())) {
                 ParkourSessionManager.restoreInventory(player);

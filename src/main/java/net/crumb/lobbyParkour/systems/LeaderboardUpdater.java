@@ -179,7 +179,7 @@ public class LeaderboardUpdater {
         return map;
     }
 
-    private static String formatTimer(float time) {
+    public static String formatTimer(float time) {
         int totalMs = (int) (time * 1000);
         int minutes = (totalMs / 1000) / 60;
         int seconds = (totalMs / 1000) % 60;

@@ -96,6 +96,22 @@ formatting:
       -
       -
 
+# PlaceholderAPI expansion (%lobbyparkour_...%). See the README for all placeholders.
+# These values are returned as plain text, so they can be used in any plugin.
+placeholders:
+  # Returned when a leaderboard position or personal best does not exist (yet)
+  empty-name: "-"
+  empty-time: "-"
+  empty-position: "-"
+  # Format of %lobbyparkour_pk_<name>_top<N>%
+  # %position% -> The leaderboard position
+  # %player_name% -> The name of the player
+  # %timer% -> The completion time (formatted with the timer format above)
+  top-format: "%player_name% - %timer%"
+  # How often (in seconds) the placeholder data is reloaded from the database as a fallback.
+  # Data is also refreshed instantly whenever a run is completed or a parkour is changed.
+  refresh-interval: 60
+
 settings:
   # If enabled, the player will be teleported to the last checkpoint x,y,z + the pitch and yaw when he first activated that checkpoint
   last-checkpoint-rotation: true

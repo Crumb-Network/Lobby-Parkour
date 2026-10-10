@@ -1,5 +1,6 @@
 package net.crumb.lobbyParkour.listeners;
 
+import net.crumb.lobbyParkour.systems.PlaceholderCache;
 import net.crumb.lobbyParkour.LobbyParkour;
 import net.crumb.lobbyParkour.database.ParkoursDatabase;
 import net.crumb.lobbyParkour.database.Query;
@@ -78,6 +79,7 @@ public class RenameItemListener implements Listener {
                 }
 
                 query.renameParkour(oldName, itemName);
+                PlaceholderCache.refresh();
 
                 UUID startEntityUuid = query.getStartEntityUuid(itemName);
                 Location startLocation = query.getStartLocation(itemName);

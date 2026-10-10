@@ -35,6 +35,14 @@ public class SchedulerUtils {
         }
     }
 
+    public static void runTaskAsync(Plugin plugin, Runnable runnable) {
+        if (IS_FOLIA) {
+            Bukkit.getAsyncScheduler().runNow(plugin, task -> runnable.run());
+        } else {
+            Bukkit.getScheduler().runTaskAsynchronously(plugin, runnable);
+        }
+    }
+
     public static void runTask(Plugin plugin, Entity entity, Runnable runnable) {
         if (IS_FOLIA) {
             entity.getScheduler().execute(plugin, runnable, null, 0);

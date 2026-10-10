@@ -1,5 +1,6 @@
 package net.crumb.lobbyParkour.listeners;
 
+import net.crumb.lobbyParkour.systems.PlaceholderCache;
 import net.crumb.lobbyParkour.LobbyParkour;
 import net.crumb.lobbyParkour.database.ParkoursDatabase;
 import net.crumb.lobbyParkour.database.Query;
@@ -191,6 +192,7 @@ public class BlockPlaceListener implements Listener {
                     UUID endEntityUuid = display.getUniqueId();
 
                     query.createParkour(parkourName, startLocation, startEntityUuid, location, endEntityUuid);
+                    PlaceholderCache.refresh();
                     player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1.1f, 2.0f);
                     MMUtils.sendMessage(player, "<hover:show_text:'<color:#52a3ff>✎</color> <color:#ffeb7a>Click to edit!</color>'><click:run_command:'/lpk'>A new parkour has been initialized. Do <white>/lpk</white> to edit your parkour. <gray>(You can also click this message.)</gray></click></hover>", MessageType.INFO);
                     MMUtils.sendMessage(player, "You can now start placing checkpoints! <gray>(3/3)", MessageType.INFO);
