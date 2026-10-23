@@ -116,3 +116,13 @@ settings:
   # If enabled, the player will be teleported to the last checkpoint x,y,z + the pitch and yaw when he first activated that checkpoint
   last-checkpoint-rotation: true
   allow-fly: false
+  # Controls which commands players may run while they are doing a parkour.
+  player-commands:
+    # If enabled, every command is blocked and the blacklist below is ignored.
+    disallow-all: false
+    blacklist:
+      - "home"
+      - "spawn"
+      - "warp"
+      - "sethome"
+    message: "<red>You cannot use commands while doing a parkour.</red>"

@@ -52,6 +52,7 @@ public final class LobbyParkour extends JavaPlugin {
         pm.registerEvents(new PlayerDeathListener(), this);
         pm.registerEvents(new PlayerLeaveListener(), this);
         pm.registerEvents(new PlayerChangeWorldListener(), this);
+        pm.registerEvents(new PlayerCommandListener(), this);
     }
 
     @Override

@@ -263,6 +263,18 @@ public class ConfigManager {
         public boolean isLastCheckpointRotation() {
             return config.getBoolean("settings.last-checkpoint-rotation", false);
         }
+
+        public boolean isDisallowAllPlayerCommands() {
+            return config.getBoolean("settings.player-commands.disallow-all", false);
+        }
+
+        public List<String> getBlockedPlayerCommands() {
+            return config.getStringList("settings.player-commands.blacklist");
+        }
+
+        public String getPlayerCommandsMessage() {
+            return config.getString("settings.player-commands.message", "<red>You cannot use commands while doing a parkour.</red>");
+        }
     }
 }
 
