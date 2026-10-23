@@ -15,19 +15,21 @@
 
 disable-holograms: false # If enabled, holograms will not be spawned. This will fix issues with plugins like DecentHolograms, but it will also disable all holograms for the parkour.
 
-# The items given to the player when starting a parkour
 items:
   last-checkpoint:
     item: "minecraft:heavy_weighted_pressure_plate"
     amount: 1
+    slot: 3
     name: "<green>Last Checkpoint"
   reset:
     item: "minecraft:oak_door"
     amount: 1
+    slot: 4
     name: "<red>Reset"
   leave:
     item: "minecraft:red_bed"
     amount: 1
+    slot: 5
     name: "<red>Leave"
 
 formatting:
@@ -126,3 +128,4 @@ settings:
       - "warp"
       - "sethome"
     message: "<red>You cannot use commands while doing a parkour.</red>"
+  no-tp-checkpoints: false # If enabled, players will not be able to teleport to the last checkpoint

@@ -50,6 +50,10 @@ public class ConfigManager {
             return config.getInt(checkpointPath + "amount", 1);
         }
 
+        public int getCheckpointSlot() {
+            return config.getInt(checkpointPath + "slot", 3);
+        }
+
         public String getCheckpointName() {
             return config.getString(checkpointPath + "name", "<green>Last Checkpoint");
         }
@@ -63,6 +67,10 @@ public class ConfigManager {
             return config.getInt(resetPath + "amount", 1);
         }
 
+        public int getResetSlot() {
+            return config.getInt(resetPath + "slot", 4);
+        }
+
         public String getResetName() {
             return config.getString(resetPath + "name", "<red>Reset");
         }
@@ -74,6 +82,10 @@ public class ConfigManager {
 
         public int getLeaveAmount() {
             return config.getInt(leavePath + "amount", 1);
+        }
+
+        public int getLeaveSlot() {
+            return config.getInt(leavePath + "slot", 5);
         }
 
         public String getLeaveName() {
@@ -262,6 +274,10 @@ public class ConfigManager {
 
         public boolean isLastCheckpointRotation() {
             return config.getBoolean("settings.last-checkpoint-rotation", false);
+        }
+
+        public boolean isNoTpCheckpoints() {
+            return config.getBoolean("settings.no-tp-checkpoints", false);
         }
 
         public boolean isDisallowAllPlayerCommands() {

@@ -46,20 +46,33 @@ public class PlayerInteractListener implements Listener {
     private final ParkourItem lastCheckpointProps = new ParkourItem(
             itemConfig.getCheckpointItem(),
             itemConfig.getCheckpointAmount(),
+            itemConfig.getCheckpointSlot(),
             itemConfig.getCheckpointName()
     );
 
     private final ParkourItem resetItemProps = new ParkourItem(
             itemConfig.getResetItem(),
             itemConfig.getResetAmount(),
+            itemConfig.getResetSlot(),
             itemConfig.getResetName()
     );
 
     private final ParkourItem leaveItemProps = new ParkourItem(
             itemConfig.getLeaveItem(),
             itemConfig.getLeaveAmount(),
+            itemConfig.getLeaveSlot(),
             itemConfig.getLeaveName()
     );
+
+    /** Builds a parkour item and places it in its configured slot, unless its amount disables it. */
+    private void giveParkourItem(Player player, ParkourItem props, List<String> lore, String actionId) {
+        if (!props.isEnabled()) return;
+
+        ItemStack item = ActionItemMaker.createItem(props.getItem(), props.getAmount(), props.getName(), lore, actionId);
+        if (item == null) return;
+
+        ItemMaker.giveItemToPlayer(player, item, props.getSlot());
+    }
 
 
     @EventHandler
@@ -256,6 +269,9 @@ public class PlayerInteractListener implements Listener {
                         });
 
                         ItemActionHandler.registerAction(lastCheckpointActionId, p -> {
+                            // Checkpoints only validate the path when this is enabled, they never move the player
+                            if (ConfigManager.getSettings().isNoTpCheckpoints()) return;
+
                             int lastIndex = ParkourSessionManager.getSessions().get(player.getUniqueId()).getLastReachedCheckpointIndex();
                             try {
                                 Query query = new Query(ParkoursDatabase.getConnection());
@@ -285,11 +301,6 @@ public class PlayerInteractListener implements Listener {
                             }
                         });
 
-                        // Create parkour items
-                        ItemStack restItem = ActionItemMaker.createItem(resetItemProps.getItem(), resetItemProps.getAmount(), resetItemProps.getName(), emptyLore, resetPkActionId);
-                        ItemStack leaveItem = ActionItemMaker.createItem(leaveItemProps.getItem(), leaveItemProps.getAmount(), leaveItemProps.getName(), emptyLore, leavePkActionId);
-                        ItemStack lastCpItem = ActionItemMaker.createItem(lastCheckpointProps.getItem(), lastCheckpointProps.getAmount(), lastCheckpointProps.getName(), emptyLore, lastCheckpointActionId);
-
                         // Save inventory before clearing
                         Map<Integer, ItemStack> saveInventory = new HashMap<>();
                         for (int i = 0; i < 36; i++) {
@@ -307,9 +318,12 @@ public class PlayerInteractListener implements Listener {
                         session.setLastCheckpointYaw(player.getYaw());
 
                         // Apply inventory layout
-                        ItemMaker.giveItemToPlayer(player, restItem, 4);
-                        ItemMaker.giveItemToPlayer(player, leaveItem, 5);
-                        ItemMaker.giveItemToPlayer(player, lastCpItem, 3);
+                        giveParkourItem(player, resetItemProps, emptyLore, resetPkActionId);
+                        giveParkourItem(player, leaveItemProps, emptyLore, leavePkActionId);
+                        // The checkpoint item has no purpose when teleporting to checkpoints is disabled
+                        if (!ConfigManager.getSettings().isNoTpCheckpoints()) {
+                            giveParkourItem(player, lastCheckpointProps, emptyLore, lastCheckpointActionId);
+                        }
 
                         // Send start message
                         Component startMessage = textFormatter.formatString(ConfigManager.getFormat().getStartMessage(), player, Map.of(

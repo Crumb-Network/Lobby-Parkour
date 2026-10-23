@@ -5,6 +5,7 @@ import net.crumb.lobbyParkour.database.ParkoursDatabase;
 import net.crumb.lobbyParkour.database.Query;
 import net.crumb.lobbyParkour.systems.ParkourSession;
 import net.crumb.lobbyParkour.systems.ParkourSessionManager;
+import net.crumb.lobbyParkour.utils.ConfigManager;
 import net.crumb.lobbyParkour.utils.MMUtils;
 import net.crumb.lobbyParkour.utils.MessageType;
 import net.crumb.lobbyParkour.utils.SchedulerUtils;
@@ -27,11 +28,14 @@ public class PlayerDeathListener implements Listener {
             event.setCancelled(true);
 
             int lastIndex = ParkourSessionManager.getSessions().get(player.getUniqueId()).getLastReachedCheckpointIndex();
+            // Checkpoints only validate the path when this is enabled, so a death costs the whole run
+            boolean noTpCheckpoints = ConfigManager.getSettings().isNoTpCheckpoints();
+
             try {
                 Query query = new Query(ParkoursDatabase.getConnection());
                 Location loc;
                 int parkourId = query.getParkourIdFromName(session.getParkourName());
-                if (lastIndex != 0) {
+                if (lastIndex != 0 && !noTpCheckpoints) {
                     loc = query.getCheckpointLocation(parkourId, lastIndex);
                 } else {
                     loc = query.getStartLocation(session.getParkourName());
