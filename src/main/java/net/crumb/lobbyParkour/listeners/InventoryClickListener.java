@@ -215,6 +215,9 @@ public class InventoryClickListener implements Listener {
                         cpEntity.remove();
                     });
 
+                    // Remove leaderboards (displays + rows) belonging to this parkour
+                    new LeaderboardManager().deleteLeaderboardsForParkour(parkourId);
+
                     query.deleteParkour(name);
                     PlaceholderCache.refresh();
 

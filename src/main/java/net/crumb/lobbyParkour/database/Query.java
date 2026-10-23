@@ -506,6 +506,48 @@ public class Query {
         }
     }
 
+    public List<Object[]> getLeaderboardLineEntities(int leaderboardId) throws SQLException {
+        synchronized (ParkoursDatabase.getLock()) {
+            List<Object[]> lines = new ArrayList<>();
+            String sql = "SELECT entity_uuid, location FROM leaderboard_lines WHERE leaderboard_id = ?";
+
+            try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+                stmt.setInt(1, leaderboardId);
+                try (ResultSet rs = stmt.executeQuery()) {
+                    while (rs.next()) {
+                        String uuidString = rs.getString("entity_uuid");
+                        if (uuidString != null) {
+                            lines.add(new Object[]{
+                                    UUID.fromString(uuidString),
+                                    LocationHelper.stringToLocation(rs.getString("location"))
+                            });
+                        }
+                    }
+                }
+            }
+
+            return lines;
+        }
+    }
+
+    public List<Integer> getLeaderboardIdsByParkourId(int parkourId) throws SQLException {
+        synchronized (ParkoursDatabase.getLock()) {
+            List<Integer> ids = new ArrayList<>();
+            String sql = "SELECT id FROM leaderboards WHERE parkour_id = ?";
+
+            try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+                stmt.setInt(1, parkourId);
+                try (ResultSet rs = stmt.executeQuery()) {
+                    while (rs.next()) {
+                        ids.add(rs.getInt("id"));
+                    }
+                }
+            }
+
+            return ids;
+        }
+    }
+
     public void deleteLeaderboardLines(int leaderboardId) throws SQLException {
         synchronized (ParkoursDatabase.getLock()) {
             String sql = "DELETE FROM leaderboard_lines WHERE leaderboard_id = ?";

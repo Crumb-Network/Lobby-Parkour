@@ -9,6 +9,7 @@ import net.crumb.lobbyParkour.database.ParkoursDatabase;
 import net.crumb.lobbyParkour.database.Query;
 import net.crumb.lobbyParkour.listeners.EntityRemove;
 import net.crumb.lobbyParkour.utils.ConfigManager;
+import net.crumb.lobbyParkour.utils.SchedulerUtils;
 import net.crumb.lobbyParkour.utils.TextFormatter;
 
 import net.kyori.adventure.text.Component;
@@ -103,26 +104,60 @@ public class LeaderboardManager {
         try {
             Query query = new Query(ParkoursDatabase.getConnection());
 
-            // Get all lines (UUIDs) associated with the leaderboard
-            var lines = query.getLeaderboardLinesByLeaderboardId(leaderboardId); // You may need to implement this method
-
-            for (UUID uuid : lines) {
-                Entity entity = Bukkit.getEntity(uuid);
-                if (entity != null && !entity.isDead()) {
-                    EntityRemove.suppress(uuid);
-                    entity.remove();
-                }
+            // Get all lines (entity uuid + location) associated with the leaderboard
+            for (Object[] line : query.getLeaderboardLineEntities(leaderboardId)) {
+                removeLineEntity((UUID) line[0], (Location) line[1]);
             }
 
             query.deleteLeaderboardLines(leaderboardId);
-
-            // Optionally delete the leaderboard entry itself, if you store it
-            query.deleteLeaderboard(leaderboardId); // You may need to implement this method
+            query.deleteLeaderboard(leaderboardId);
 
             updater.updateCache();
         } catch (SQLException ex) {
             ex.printStackTrace();
         }
+    }
+
+    /**
+     * Removes every leaderboard belonging to a parkour, both its display entities
+     * and its database rows. Call this before deleting the parkour itself.
+     */
+    public void deleteLeaderboardsForParkour(int parkourId) {
+        try {
+            Query query = new Query(ParkoursDatabase.getConnection());
+
+            for (int leaderboardId : query.getLeaderboardIdsByParkourId(parkourId)) {
+                deleteLeaderboard(leaderboardId);
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    private void removeLineEntity(UUID uuid, Location location) {
+        if (location == null || location.getWorld() == null) {
+            // No location to work from, best effort on whatever is currently tracked.
+            Entity entity = Bukkit.getEntity(uuid);
+            if (entity != null && !entity.isDead()) {
+                EntityRemove.suppress(uuid);
+                SchedulerUtils.runTask(plugin, entity, entity::remove);
+            }
+            return;
+        }
+
+        // The display may sit in an unloaded chunk, in which case it is not tracked
+        // yet and would come back as an orphan once the chunk loads again.
+        location.getWorld().getChunkAtAsync(location).thenRun(() ->
+                SchedulerUtils.runTask(plugin, location, () -> {
+                    Entity entity = Bukkit.getEntity(uuid);
+                    if (entity == null) {
+                        entity = location.getWorld().getEntity(uuid);
+                    }
+                    if (entity != null && !entity.isDead()) {
+                        EntityRemove.suppress(uuid);
+                        entity.remove();
+                    }
+                }));
     }
 
 }
