@@ -64,7 +64,6 @@ public class InventoryClickListener implements Listener {
 
 
             if (displayName.equals("+ Create a new parkour")) {
-                player.getInventory().clear(0);
                 player.getOpenInventory().close();
                 MMUtils.sendMessage(player, "Please place the start of your parkour. <gray>(1/3)</gray>", MessageType.INFO);
                 ItemMaker.giveItemToPlayer(player, ItemMaker.createItem("minecraft:light_weighted_pressure_plate", 1, "<green>Parkour Start", Arrays.asList("<gray>Place this where you want", "<gray>your parkour to start.")), 0);
